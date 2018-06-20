@@ -44,7 +44,7 @@ public class BlockCypherApi {
     @Autowired
     private BatchMapper batchMapper;
     
-    //지갑생성전api 에서 사용 가능한 주소를 받아 온다.
+    //지갑생성전api 에서 사용 가능한 주소를 받아 온다.2
     public GenerateAddrDTO generateAddressApi() {
     		String urlExt = "addrs";
     		restTemplate = new RestTemplate();
