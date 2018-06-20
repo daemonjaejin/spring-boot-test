@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fidelium.dao.UserCoinMapper">
+
+    <select id="userCoinList" resultType="com.fidelium.domain.UserCoin" parameterType="com.fidelium.domain.UserCoin">
+        SELECT
+            id
+            , type
+            , coin
+            , qr_path
+        FROM user_coin
+        <where>
+            AND id = #{id}
+        </where>
+    </select>
+
+    <select id="getUserCoin" resultType="com.fidelium.domain.UserCoin" parameterType="com.fidelium.domain.UserCoin">
+        SELECT
+            id
+            , type
+            , coin
+            , qr_path
+          FROM user_coin
+        <where>
+            AND id = #{id}
+            AND type = #{type}
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fidelium.dao.BatchMapper">
+
+    <select id="selectWriterList" resultType="com.fidelium.model.WriterSO" >
+        SELECT *
+        FROM writer
+    </select>
+
+    <select id="selectUserTradeHistoryBatch" resultType="com.fidelium.domain.UserTradeHistory">
+        SELECT *
+        FROM user_trade_history_batch
+    </select>
+
+    <select id="selectTradeHistoryBatch" resultType="com.fidelium.domain.TradeHistoryBatch">
+        SELECT *
+        FROM trade_history_batch
+    </select>
+
+    <update id="updateUserTradeHistory" parameterType="com.fidelium.domain.UserTradeHistory">
+      UPDATE user_trade_history
+      <set>
+          view_yn = #{viewYn}
+        , upd_datetime = NOW()
+      </set>
+      <where>
+          AND id = #{id}
+          AND type = #{type}
+          AND order_datetime = #{orderDatetime}
+          AND kind = #{kind}
+      </where>
+    </update>
+
+    <update id="updateTradeHistory" parameterType="com.fidelium.domain.TradeHistory">
+        UPDATE trade_history
+        <set>
+            view_yn = #{viewYn}
+            , upd_datetime = NOW()
+        </set>
+        <where>
+            AND id = #{id}
+            AND type = #{type}
+            AND trade_datetime = #{tradeDatetime}
+        </where>
+    </update>
+
+    <delete id="deleteUserTradeHistoryBatch" parameterType="com.fidelium.domain.UserTradeHistory">
+      DELETE FROM user_trade_history_batch
+      <where>
+          AND id = #{id}
+          AND type = #{type}
+          AND order_datetime = #{orderDatetime}
+          and kind = #{kind}
+      </where>
+    </delete>
+
+    <delete id="deleteTradeHistoryBatch" parameterType="com.fidelium.domain.TradeHistory">
+        DELETE FROM trade_history_batch
+        <where>
+            AND id = #{id}
+            AND type = #{type}
+            AND trade_datetime = #{tradeDatetime}
+        </where>
+    </delete>
+
+    <insert id="insertUserTradeHistory" parameterType="com.fidelium.domain.UserTradeHistory">
+        insert into user_trade_history (
+          id
+          , type
+          , user_trade_datetime
+          , kind
+          , address
+          , amount
+          , price
+          , rate
+          , charge
+          , view_yn
+          , qr_path
+          , data
+          , tx_hash
+        )
+        values (
+          #{id}
+          , #{type}
+          , NOW()
+          , #{kind}
+          , #{address}
+          , #{amount}
+          , #{price}
+          , #{rate}
+          , #{charge}
+          , 'N'
+          , #{qr_path}
+          , #{data}
+          , #{txHash}
+        )
+    </insert>
+
+    <insert id="insertUserTradeHistoryBatch" parameterType="com.fidelium.domain.UserTradeHistory">
+        insert into user_trade_history_batch (
+          id
+          , type
+          , user_trade_datetime
+          , kind
+          , address
+          , amount
+          , price
+          , rate
+          , charge
+          , qr_path
+          , data
+          , tx_hash
+        )
+        values (
+          #{id}
+          , #{type}
+          , NOW()
+          , #{kind}
+          , #{address}
+          , #{amount}
+          , #{price}
+          , #{rate}
+          , #{charge}
+          , #{qr_path}
+          , #{data}
+          , #{txHash}
+        )
+    </insert>
+
+    <insert id="insertTradeHistory" parameterType="com.fidelium.domain.TradeHistory">
+      insert into trade_history (
+        id
+        , type
+        , trade_datetime
+        , trade_type
+        , sell_buy_type
+        , amount
+        , price
+        , rate
+        , dollar_rate
+        , view_yn
+        , upd_datetime
+        , status
+        , data
+        , tx_hash
+      )
+      values (
+        #{id,jdbcType=VARCHAR}
+        , #{type,jdbcType=VARCHAR}
+        , NOW()
+        , #{tradeType,jdbcType=VARCHAR}
+        , #{sellBuyType,jdbcType=VARCHAR}
+        , #{amount,jdbcType=INTEGER}
+        , #{price,jdbcType=DOUBLE}
+        , #{rate,jdbcType=DOUBLE}
+        , #{dollarRate,jdbcType=DOUBLE}
+        , 'N'
+        , #{updDatetime,jdbcType=DATE}
+        , #{status,jdbcType=VARCHAR}
+        , #{data}
+        , #{txHash}
+      )
+    </insert>
+
+    <insert id="insertTradeHistoryBatch" parameterType="com.fidelium.domain.TradeHistory">
+        insert into trade_history (
+            id
+            , type
+            , trade_datetime
+            , trade_type
+            , sell_buy_type
+            , amount
+            , price
+            , rate
+            , dollar_rate
+            , upd_datetime
+            , status
+            , data
+            , tx_hash
+        )
+        values (
+            #{id,jdbcType=VARCHAR}
+            , #{type,jdbcType=VARCHAR}
+            , NOW()
+            , #{tradeType,jdbcType=VARCHAR}
+            , #{sellBuyType,jdbcType=VARCHAR}
+            , #{amount,jdbcType=INTEGER}
+            , #{price,jdbcType=DOUBLE}
+            , #{rate,jdbcType=DOUBLE}
+            , #{dollarRate,jdbcType=DOUBLE}
+            , #{updDatetime,jdbcType=DATE}
+            , #{status,jdbcType=VARCHAR}
+            , #{data}
+            , #{txHash}
+        )
+    </insert>
+
+</mapper>

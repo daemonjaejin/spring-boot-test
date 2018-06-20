@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fidelium.dao.UserMapper">
+
+    <select id="getUserList" resultType="com.fidelium.domain.User">
+        SELECT
+        <if test="isCount">
+            COUNT(*) AS total_num
+        </if>
+        <if test="!isCount">
+            *
+        </if>
+        FROM user
+        INNER JOIN user_role
+        ON user.id = user_role.id
+        WHERE user.del_yn = 'N'
+        AND user_role.role = #{role}
+        <if test="!isCount">
+          LIMIT #{firstNum}, #{lastNum}
+        </if>
+    </select>
+
+    <select id="getUserConfirmList" parameterType="com.fidelium.domain.User" resultType="com.fidelium.domain.User">
+        SELECT
+          region_yn
+          , address
+          , address_yn
+          , id_card
+          , type_yn
+        FROM user
+        WHERE user.del_yn = 'N'
+          AND id = #{id}
+    </select>
+
+    <select id="getUserTotNum" parameterType="com.fidelium.domain.User" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user
+        INNER JOIN user_role
+        ON user.id = user_role.id
+        WHERE user.del_yn = 'N'
+        AND user_role.role = #{role}
+    </select>
+
+    <select id="getUser" resultType="com.fidelium.domain.User" parameterType="java.lang.String">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="readAuthority" parameterType="java.lang.String" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+      SELECT role
+      FROM user_role
+      WHERE id = #{id}
+    </select>
+
+    <select id="readUser" resultType="com.fidelium.domain.User" parameterType="java.lang.String">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="userCheck" resultType="java.lang.Integer" parameterType="com.fidelium.domain.User">
+        SELECT COUNT(*)
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <insert id="createUser" parameterType="com.fidelium.domain.User">
+      INSERT INTO user
+      (
+        id
+        , password
+        , ori_password
+        , auth_password
+        , otp_qr_key
+        , otp_qr_url
+        , name
+        , isAccountNonExpired
+        , isAccountNonLocked
+        , isCredentialsNonExpired
+        , isEnabled
+        , inst_datetime
+        , del_yn
+        , wallet_yn
+        , level
+      )
+      VALUES
+      (
+        #{id}
+        , #{password}
+        , #{oriPassword}
+        , #{authPassword}
+        , #{otpQrKey}
+        , #{otpQrUrl}
+        , #{name}
+        , 1
+        , 1
+        , 1
+        , 1
+        , NOW()
+        , 'N'
+        , 'N'
+        , 0
+      )
+    </insert>
+
+    <insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
+        INSERT INTO user_role
+        (
+          id
+          , role
+        )
+        VALUES
+        <foreach item="item" index="index" collection="authorities" separator=",">
+            (#{id}, #{item.authority})
+        </foreach>
+    </insert>
+
+    <update id="updateUser" parameterType="com.fidelium.domain.User">
+        UPDATE user
+        <set>
+            <if test="password != null and password != '' ">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="oriPassword != null and oriPassword != '' ">
+                ori_password = #{oriPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="authPassword != null and authPassword != '' ">
+                auth_password = #{authPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="authOriPassword != null and authOriPassword != '' ">
+                auth_ori_password = #{authOriPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != '' ">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null and name != '' ">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null and sex != '' ">
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null and birthday != '' ">
+                birthday = #{birthday,jdbcType=VARCHAR},
+            </if>
+            <if test="delYn != null and delYn != '' ">
+                del_yn = #{delYn,jdbcType=VARCHAR},
+            </if>
+            <if test="walletYn != null and walletYn != '' ">
+                wallet_yn = #{walletYn,jdbcType=VARCHAR},
+            </if>
+            <if test="etc != null and etc != '' ">
+                etc = #{etc,jdbcType=VARCHAR},
+            </if>
+            <if test="regionYn != null and regionYn != '' ">
+                region_yn = #{regionYn},
+            </if>
+            <if test="region != null and region != '' ">
+                region = #{region},
+            </if>
+            <if test="addressYn != null and addressYn != '' ">
+                address_yn = #{addressYn},
+            </if>
+            <if test="address != null and address != '' ">
+                address = #{address},
+            </if>
+            <if test="idCard != null and idCard != '' ">
+                id_card = #{idCard},
+            </if>
+            <if test="typeYn != null and typeYn != '' ">
+                type_yn = #{typeYn},
+            </if>
+            <if test="type != null and type != '' ">
+                type = #{type},
+            </if>
+            <if test="currency != null and currency != '' ">
+                currency = #{currency},
+            </if>
+            <if test="fideliumWallet != null and fideliumWallet != '' ">
+                fidelium_wallet = #{fideliumWallet},
+            </if>
+            <if test="nation != null and nation != '' ">
+                nation = #{nation},
+            </if>
+            <if test="oneLimit != null and oneLimit != '' ">
+                one_limit = #{oneLimit},
+            </if>
+            <if test="dayLimit != null and dayLimit != '' ">
+                day_limit = #{dayLimit},
+            </if>
+            <if test="fileName != null and fileName != '' ">
+                file_name = #{fileName},
+            </if>
+            <if test="filePath != null and filePath != '' ">
+                file_path = #{filePath},
+            </if>
+            <if test="originFileName != null and originFileName != '' ">
+                origin_file_name = #{originFileName},
+            </if>
+            <if test="webFilePath != null and webFilePath != '' ">
+                web_file_path = #{webFilePath},
+            </if>
+            updt_datetime = #{updtDatetime},
+            mod_user = #{modUser}
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <update id="userPassUpdate" parameterType="com.fidelium.domain.User">
+        UPDATE user
+        <set>
+            password = #{password},
+            ori_password = #{oriPassword}
+        </set>
+        <where>
+            AND id = #{id}
+            AND phone = #{phone}
+        </where>
+    </update>
+
+    <update id="deleteUser" parameterType="java.lang.String">
+      UPDATE user
+      SET
+        del_yn = 'Y',
+        del_user = #{delUser},
+        delt_datetime = NOW()
+      WHERE id = #{id}
+    </update>
+
+    <update id="realDeleteUser" parameterType="java.lang.String">
+        DELETE FROM user
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteAuthority" parameterType="java.lang.String">
+      DELETE FROM user_role
+      WHERE id = #{id}
+    </delete>
+
+    <insert id="insertBoard" parameterType="com.fidelium.domain.Board">
+        INSERT INTO board(
+          id
+          , subject
+          , substance
+          , ins_datetime
+          , del_yn
+        )
+        VALUES(
+          #{id}
+          , #{subject}
+          , #{substance}
+          , NOW()
+          , 'N'
+        )
+    </insert>
+
+
+</mapper>

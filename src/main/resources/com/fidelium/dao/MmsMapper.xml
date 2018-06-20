@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fidelium.dao.MmsMapper">
+
+    <select id="mmsAuthTokenInfo" resultType="com.fidelium.domain.Message.MmsAuthToken" >
+        SELECT *
+        FROM mms_auth_token
+        <where>
+            AND key_value = 1
+        </where>
+    </select>
+
+    <update id="updateInsertAuth" parameterType="com.fidelium.domain.Message.MmsAuthToken" >
+        INSERT INTO mms_auth_token(
+            key_value
+            , access_token
+            , schema_value
+            , expired
+            , ins_datetime
+        )
+        VALUES (
+            #{keyValue}
+            , #{accessToken}
+            , #{schemaValue}
+            , #{expired}
+            , NOW()
+        )
+        ON DUPLICATE KEY
+        UPDATE
+            key_value = #{keyValue}
+            , access_token = #{accessToken}
+            , schema_value = #{schemaValue}
+            , expired = #{expired}
+            , ins_datetime = NOW()
+    </update>
+
+    <insert id="insertMmsSendResult" parameterType="com.fidelium.domain.Message.MmsSendVO">
+        INSERT INTO mms_send_result(
+          group_id
+          , to_count
+          , message_id
+          , to_value
+          , status
+          <if test="errorText != null and errorText != '' ">
+            , error_text
+          </if>
+          , ins_datetime
+          <if test="ref != null and ref != '' ">
+          , ref
+          </if>
+        )
+        VALUES(
+          #{groupId}
+          , #{toCount}
+          , #{messageId}
+          , #{to}
+          , #{status}
+          <if test="errorText != null and errorText != '' ">
+            , #{errorText}
+          </if>
+          , NOW()
+          <if test="ref != null and ref != '' ">
+          , #{ref}
+          </if>
+        )
+    </insert>
+
+    <select id="selectMmsSendInfo" parameterType="com.fidelium.domain.Message.MmsSendVO" resultType="com.fidelium.domain.Message.MmsSendVO">
+        SELECT *
+        FROM mms_send_result
+        <where>
+            AND message_id = #{messageId}
+            AND to_value = #{to}
+        </where>
+    </select>
+
+</mapper>

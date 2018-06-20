@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fidelium.dao.CoinInfoMapper">
+  <insert id="insert" parameterType="com.fidelium.domain.CoinInfo">
+      INSERT INTO coin_info
+      (
+      	id
+		,type
+		,wallet_name
+		,public_key
+		,private_key
+		,address
+      )
+      VALUES
+      (
+        #{id}
+        ,#{type}
+        ,#{walletName}
+		,#{publicKey}
+		,#{privateKey}
+		,#{address}
+      )
+  </insert>
+
+    <select id="getCoinInfo" resultType="com.fidelium.domain.CoinInfo" parameterType="com.fidelium.domain.CoinInfo">
+        SELECT
+            id, type, public_key, private_key, address, wallet_name
+          FROM coin_info
+        <where>
+            AND id = #{id}
+            AND type = #{type}
+        </where>
+    </select>
+
+
+</mapper>

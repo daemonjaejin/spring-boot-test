@@ -1,0 +1,14 @@
+spring.datasource.sqlScriptEncoding : UTF-8
+spring.thymeleaf : false
+spring:
+  datasources:
+    driverClassName : com.mysql.jdbc.Driver
+    url : jdbc:mysql://119.205.233.70/fidelium?autoReconnect=true&useSSL=false
+    username : fidelium
+    password : vlepffldna1!
+    port : 3306
+  jpa:
+    hibernate.ddl-auto : validate
+  thymeleaf.cache : false
+security.basic.enabled : false
+

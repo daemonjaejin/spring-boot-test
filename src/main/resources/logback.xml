@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5lovel %logger[%method:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <logger name="jdbc.resultset" level="OFF" />
+
+    <logger name="jdbc.resultsettable" level="OFF" />
+
+    <logger name="jdbc.connection" level="DEBUG" />
+
+    <logger name="jdbc.audit" level="INFO" />
+
+    <logger name="jdbc.sqltiming" level="WARN" />
+
+    <logger name="java.sql" level="DEBUG" />
+
+    <logger name="org.apache.ibatis" level="DEBUG" />
+
+    <logger name="org.apache.ibatis.io" level="INFO" />
+
+    <logger name="org.mybatis.spring" level="DEBUG" />
+
+    <logger name="org.mybatis.spring.SqlSessionFactoryBean" level="INFO" />
+
+    <logger name="org.apache.ibatis.logging.jdbc" level="OFF" />
+
+    <logger name="org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping" level="INFO" />
+
+    <logger name="org.springframework.context.annotation" level="INFO" />
+
+    <logger name="org.springframework.boot.web.filter" level="INFO" />
+
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" />
+
+    <logger name="org.springframework.security" level="INFO" />
+
+    <logger name="org.springframework.boot" level="INFO" />
+
+    <logger name="org.springframework" level="INFO" />
+
+    <logger name="net.sf.ehcache" level="INFO" />
+
+    <logger name="com.fidelium" level="DEBUG" />
+
+    <root level="INFO">
+        <appender-ref ref="console" />
+    </root>
+
+</configuration>
