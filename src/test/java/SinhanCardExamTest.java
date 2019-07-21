@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class sinhanCardExamTest {
+public class SinhanCardExamTest {
 
     private static final int [] lenCut = {3, 5, 6, 7, 8, 10, 10, 10, 10, 16};
 
